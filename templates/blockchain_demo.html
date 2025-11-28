@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">
+        <i class="fas fa-link"></i> 🔗 Blockchain Food Tracking Demo
+    </h1>
+    
+    <div class="alert alert-info">
+        <strong>Innovation:</strong> Every food item is tracked on a blockchain from farm to plate. 
+        This ensures transparency, prevents corruption, and guarantees quality!
+    </div>
+    
+    <!-- Supply Chain Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <h2 id="totalBlocks">-</h2>
+                    <p>Total Blocks</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <h2 id="totalTransactions">-</h2>
+                    <p>Transactions</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <h2 id="qualityRate">-</h2>
+                    <p>Quality Pass Rate</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-white">
+                <div class="card-body">
+                    <h2 id="chainStatus">-</h2>
+                    <p>Chain Status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Track Food Item -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5>Track Food Journey</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="foodItemInput" 
+                           placeholder="Enter food item name (e.g., Basmati Rice)" 
+                           value="Basmati Rice">
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary btn-block" onclick="trackFood()">
+                        <i class="fas fa-search"></i> Track Journey
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Journey Timeline -->
+    <div id="journeyTimeline" class="card" style="display: none;">
+        <div class="card-header bg-success text-white">
+            <h5>Food Journey on Blockchain</h5>
+        </div>
+        <div class="card-body">
+            <div id="journeyContent"></div>
+        </div>
+    </div>
+    
+    <!-- How It Works -->
+    <div class="card mt-4">
+        <div class="card-header bg-info text-white">
+            <h5>How Blockchain Prevents Corruption</h5>
+        </div>
+        <div class="card-body">
+            <ol class="lead">
+                <li><strong>Immutable Records:</strong> Once data is added, it cannot be changed or deleted</li>
+                <li><strong>Transparency:</strong> Everyone can verify the food journey</li>
+                <li><strong>Quality Checks:</strong> Each stage requires quality verification</li>
+                <li><strong>Accountability:</strong> Every handler is recorded with timestamp</li>
+                <li><strong>Prevents Theft:</strong> Tracks exact quantities at each stage</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load blockchain stats on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadBlockchainStats();
+});
+
+function loadBlockchainStats() {
+    fetch('/api/blockchain/stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const stats = data.stats;
+                document.getElementById('totalBlocks').textContent = stats.total_blocks;
+                document.getElementById('totalTransactions').textContent = stats.total_transactions;
+                document.getElementById('qualityRate').textContent = stats.quality_pass_rate + '%';
+                document.getElementById('chainStatus').innerHTML = 
+                    stats.chain_verified ? '✅ Verified' : '❌ Failed';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading stats:', error);
+        });
+}
+
+function trackFood() {
+    const foodItem = document.getElementById('foodItemInput').value;
+    
+    if (!foodItem) {
+        alert('Please enter a food item name');
+        return;
+    }
+    
+    fetch(`/api/blockchain/track/${encodeURIComponent(foodItem)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayJourney(data);
+            } else {
+                alert('Food item not found in blockchain');
+            }
+        })
+        .catch(error => {
+            console.error('Error tracking food:', error);
+            alert('Error tracking food item');
+        });
+}
+
+function displayJourney(data) {
+    const timeline = document.getElementById('journeyTimeline');
+    const content = document.getElementById('journeyContent');
+    
+    if (data.journey.length === 0) {
+        content.innerHTML = '<p class="text-warning">No journey data found for this item.</p>';
+        timeline.style.display = 'block';
+        return;
+    }
+    
+    let html = '<div class="timeline">';
+    
+    data.journey.forEach((step, index) => {
+        const icon = getStageIcon(step.stage);
+        const color = step.quality_passed ? 'success' : 'danger';
+        
+        html += `
+            <div class="timeline-item mb-4">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        <div class="timeline-badge bg-${color}">
+                            ${icon}
+                        </div>
+                        <strong>Block ${step.block}</strong>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card border-${color}">
+                            <div class="card-body">
+                                <h5 class="card-title">${step.stage}</h5>
+                                <p class="card-text">
+                                    <strong>Location:</strong> ${step.location}<br>
+                                    <strong>Handler:</strong> ${step.handler}<br>
+                                    <strong>Time:</strong> ${step.timestamp}<br>
+                                    <strong>Quality:</strong> 
+                                    <span class="badge badge-${color}">
+                                        ${step.quality_passed ? '✅ Passed' : '❌ Failed'}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    content.innerHTML = html;
+    timeline.style.display = 'block';
+}
+
+function getStageIcon(stage) {
+    const icons = {
+        'Purchase': '🛒',
+        'Storage': '📦',
+        'Preparation': '👨‍🍳',
+        'Distribution': '🚚',
+        'Consumption': '🍽️'
+    };
+    return icons[stage] || '📍';
+}
+</script>
+
+<style>
+.timeline-badge {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 10px;
+}
+
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    font-weight: bold;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,14 @@
+Flask==3.0.0
+Werkzeug==3.0.0
+gunicorn==21.2.0
+pandas==2.2.2
+numpy==1.26.4
+PuLP==2.7.0
+fpdf==1.7.2
+openpyxl==3.1.5
+requests==2.31.0
+python-dotenv==1.0.0
+qrcode==8.0
+Pillow==11.0.0
+google-generativeai==0.3.2
+googletrans==4.0.0rc1
