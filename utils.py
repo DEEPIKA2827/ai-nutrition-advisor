@@ -30,8 +30,147 @@ FOOD_EMOJIS = {
     'Nutrition Rich': '💪',
 }
 
-def get_food_emoji(category):
-    """Get emoji for food category"""
+# Specific food item emojis for better visualization
+SPECIFIC_FOOD_EMOJIS = {
+    # Grains & Cereals
+    'Rice': '🍚',
+    'Wheat Flour (Atta)': '🌾',
+    'Wheat flour (atta)': '🌾',
+    'Jowar (Sorghum)': '🌿',
+    'Jowar (sorghum)': '🌿',
+    'Ragi (Finger Millet)': '🟤',
+    'Ragi (finger millet)': '🟤',
+    'Poha (Flattened Rice)': '🥣',
+    'Rice (raw, polished)': '🍚',
+    'Rice (raw, brown)': '🟫',
+    'Bajra (pearl millet)': '🌾',
+    'Bajra (Pearl Millet)': '🌾',
+    'Semolina (Rava/Suji)': '⚪',
+    'Soya Chunks': '🟡',
+    'Oats': '🥣',
+    'Quinoa': '⚪',
+    'Chia Seeds': '🔵',
+    'Flax Seeds (Alsi)': '🟤',
+    'Sunflower Seeds': '🌻',
+    'Pumpkin Seeds': '🎃',
+    
+    # Pulses & Legumes  
+    'Moong Dal': '🟢',
+    'Moong dal (green gram)': '🟢',
+    'Toor Dal': '🟡',
+    'Toor dal (pigeon pea)': '🟡',
+    'Chana Dal': '🟠',
+    'Chana dal (bengal gram)': '🟠',
+    'Masoor Dal': '🔴',
+    'Masoor dal (red lentil)': '🔴',
+    'Rajma (Kidney Beans)': '🔴',
+    'Rajma (kidney beans)': '🔴',
+    'Chickpeas (Kabuli Chana)': '🟤',
+    'Black Gram (Urad Dal)': '⚫',
+    'Urad dal (black gram)': '⚫',
+    'Green Gram': '🟢',
+    
+    # Vegetables
+    'Potato': '🥔',
+    'Onion': '🧅',
+    'Tomato': '🍅',
+    'Carrot': '🥕',
+    'Spinach (Palak)': '🥬',
+    'Pumpkin': '🎃',
+    'Cabbage': '🥬',
+    'Cauliflower': '🥦',
+    'Green Beans': '🫛',
+    'Brinjal (Eggplant)': '🍆',
+    'Beetroot': '🫚',
+    'Bottle Gourd (Lauki)': '🥒',
+    'Ridge Gourd': '🥒',
+    'Lady Finger (Bhindi)': '🫛',
+    'Radish': '🫚',
+    'Bitter Gourd (Karela)': '🥒',
+    
+    # Leafy Vegetables
+    'Fenugreek Leaves (Methi)': '🌿',
+    'Coriander Leaves': '🌿',
+    'Curry Leaves': '🍃',
+    'Amaranth Leaves': '🥬',
+    'Drumstick Leaves': '🌿',
+    'Mint Leaves': '🌿',
+    
+    # Dairy Products
+    'Milk': '🥛',
+    'Curd (Yogurt)': '🥛',
+    'Paneer': '🧀',
+    'Cow milk (whole)': '🥛',
+    'Buffalo milk': '🥛',
+    'Curd (yogurt)': '🥛',
+    'Paneer (cottage cheese)': '🧀',
+    'Ghee': '🧈',
+    'Butter': '🧈',
+    
+    # Protein Sources
+    'Eggs': '🥚',
+    'Chicken': '🍗',
+    'Fish': '🐟',
+    'Mutton': '🍖',
+    
+    # Fruits
+    'Banana': '🍌',
+    'Apple': '🍎',
+    'Orange': '🍊',
+    'Papaya': '🍈',
+    'Mango': '🥭',
+    'Guava': '🍐',
+    'Pomegranate': '🍎',
+    'Watermelon': '🍉',
+    'Sapota (Chikoo)': '🥔',
+    'Grapes': '🍇',
+    
+    # Dry Fruits & Nuts
+    'Peanuts (Groundnut)': '🥜',
+    'Peanuts': '🥜',
+    'Groundnuts': '🥜',
+    'Almonds': '🌰',
+    'Cashews': '🥔',
+    'Walnuts': '🧠',
+    'Raisins (Kishmish)': '🍇',
+    'Dates': '🌴',
+    'Dates (Khajoor)': '🫐',
+    'Dried Coconut': '🥥',
+    'Sesame Seeds (Til)': '⚪',
+    'Flaxseeds': '🟤',
+    'Garden Cress Seeds': '🌱',
+    
+    # Fats & Oils
+    'Cooking Oil': '🛢️',
+    'Sunflower Oil': '🌻',
+    'Mustard Oil': '🛢️',
+    'Coconut Oil': '🥥',
+    
+    # Sweeteners
+    'Jaggery (Gur)': '🍯',
+    'Sugar': '🧂',
+    'Honey': '🍯',
+    
+    # Nutrition Rich Foods
+    'Soybean': '🫘',
+    'Sesame Seeds (Til)': '🌰',
+    'Flaxseeds': '🌰',
+    'Garden Cress Seeds': '🌱',
+}
+
+def get_food_emoji(category, item_name=None):
+    """
+    Get emoji for food category or specific item
+    
+    Args:
+        category: Food category name
+        item_name: Specific food item name (optional)
+    
+    Returns:
+        Emoji string
+    """
+    if item_name and item_name in SPECIFIC_FOOD_EMOJIS:
+        return SPECIFIC_FOOD_EMOJIS[item_name]
     return FOOD_EMOJIS.get(category, '🍽️')
 
 class NutritionPDF(FPDF):

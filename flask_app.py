@@ -81,7 +81,7 @@ def index():
                 'name': ing['name'],
                 'cost': ing['cost_per_kg'],
                 'calories': ing['calories_per_100g'],
-                'emoji': get_food_emoji(category)
+                'emoji': get_food_emoji(category, ing['name'])
             })
         ingredients_data.append({
             'category': category,
