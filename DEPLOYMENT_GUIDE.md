@@ -27,7 +27,7 @@ In Railway dashboard:
 1. Go to **Variables** tab
 2. Add this variable:
    - **Key**: `GEMINI_API_KEY`
-   - **Value**: `AIzaSyC0NFx5UNPIbfYL9bJ_P9tATDAku7RZyCU`
+   - **Value**: `YOUR_API_KEY_HERE` (get from https://aistudio.google.com/app/apikey)
 
 ### **Step 5: Deploy!**
 - Click **"Deploy"**
