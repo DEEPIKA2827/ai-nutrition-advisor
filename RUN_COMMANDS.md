@@ -4,7 +4,7 @@
 
 ### Option 1: One-line command (Easiest)
 ```powershell
-cd C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\ai-nutrition-advisor3-main; $env:GEMINI_API_KEY="AIzaSyDMtE55JiBokuuVx7oJVNJPVRXayFCfLss"; C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\venv\Scripts\python.exe flask_app.py
+cd C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\ai-nutrition-advisor3-main; $env:GEMINI_API_KEY="YOUR_API_KEY_HERE"; C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\venv\Scripts\python.exe flask_app.py
 ```
 
 ### Option 2: Step by step
@@ -12,8 +12,8 @@ cd C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\ai-nutrition-advisor3-m
 # Navigate to project
 cd C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\ai-nutrition-advisor3-main
 
-# Set API key
-$env:GEMINI_API_KEY="AIzaSyDMtE55JiBokuuVx7oJVNJPVRXayFCfLss"
+# Set API key (GET YOUR OWN from https://aistudio.google.com/app/apikey)
+$env:GEMINI_API_KEY="YOUR_API_KEY_HERE"
 
 # Run app
 C:\Users\Deepika\Downloads\ai-nutrition-advisor3-main\venv\Scripts\python.exe flask_app.py
